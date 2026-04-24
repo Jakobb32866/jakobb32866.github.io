@@ -85,7 +85,7 @@
     {
         State.OnChange += StateHasChanged;
         if (!string.IsNullOrEmpty(TagFromQuery))
-            _activeTags.Add(TagFromQuery);
+            _activeTags.Add(Uri.UnescapeDataString(TagFromQuery));
     }
 
     public void Dispose()

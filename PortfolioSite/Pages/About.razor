@@ -35,7 +35,7 @@
                     <div class="skill-tags">
                         @foreach (var skill in group)
                         {
-                            <button class="hss" @onclick='() => Nav.NavigateTo("/works?tag=" + skill.Name)'>@skill.Name</button>
+                            <button class="hss" @onclick='() => Nav.NavigateTo("/works?tag=" + Uri.EscapeDataString(skill.Name))'>@skill.Name</button>
                         }
                     </div>
                 </div>
