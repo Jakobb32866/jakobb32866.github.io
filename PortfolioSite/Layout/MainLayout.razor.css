@@ -1,0 +1,20 @@
+/* ── LAYOUT ── */
+.site-body {
+    padding-top: var(--nav);
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+}
+.page-wrap {
+    flex: 1;
+    max-width: var(--page-max);
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 var(--pad);
+}
+.site-footer {
+    border-top: 1px solid var(--border);
+    padding: 1.4rem var(--pad);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: .65rem; color: var(--fg3);
+}
+.sf-prompt { color: var(--accent); letter-spacing: .1em; }

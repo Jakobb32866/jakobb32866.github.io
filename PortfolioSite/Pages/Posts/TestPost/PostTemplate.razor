@@ -1,0 +1,59 @@
+@page "/works/test-post"
+@inject NavigationManager Nav
+@inject AppState State
+@using PortfolioSite.Models
+@implements IDisposable
+
+<div class="post-page">
+    <button class="post-back" @onclick='() => Nav.NavigateTo("/works")'>@(State.Lang == "pl" ? "← prace" : "← works")</button>
+
+    <div class="page-header">
+        <div class="page-label">// @_item?.Type</div>
+        <h1 class="page-title">@(State.Lang == "pl" ? _item?.TitlePl : _item?.TitleEn)</h1>
+        <div class="post-meta">
+            <span class="post-date">@_item?.Date</span>
+            @foreach (var tag in _item?.Tags ?? new List<string>())
+            {
+                <span class="we-tag-inline">@tag</span>
+            }
+        </div>
+        <div class="post-links">
+            @if (_item?.GitHubUrl != null)
+            {
+                <a href="@_item.GitHubUrl" target="_blank" class="post-link">GitHub →</a>
+            }
+            @if (_item?.LiveUrl != null)
+            {
+                <a href="@_item.LiveUrl" target="_blank" class="post-link post-link--live">Live →</a>
+            }
+        </div>
+    </div>
+
+    <div class="post-content">
+        @if (State.Lang == "pl")
+        {
+            <p>Pierwszy akapit PL...</p>
+            <h2>Nagłówek sekcji</h2>
+            <p>Treść sekcji...</p>
+        }
+        else
+        {
+            <p>First paragraph EN...</p>
+            <h2>Section header</h2>
+            <p>Section content...</p>
+        }
+    </div>
+</div>
+
+@code {
+    private WorkItem? _item;
+
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+        _item = WorksData.All.FirstOrDefault(w => w.Slug == "test-post");
+    }
+
+    public void Dispose()
+        => State.OnChange -= StateHasChanged;
+}

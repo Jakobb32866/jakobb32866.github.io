@@ -1,0 +1,65 @@
+@page "/contact"
+@inject AppState State
+@inject IJSRuntime JS
+@implements IDisposable
+
+<div class="contact-page">
+    <div class="page-header">
+        <div class="page-label">@(State.Lang == "pl" ? "// kontakt" : "// contact")</div>
+        <h1 class="page-title">@(State.Lang == "pl" ? "Pogadajmy." : "Let's talk.")</h1>
+    </div>
+
+    <p class="contact-sub">
+        @(State.Lang == "pl"
+            ? "Zawsze miło porozmawiać o kodzie, projektach albo czymkolwiek innym."
+            : "Always happy to chat about code, projects, or anything else.")
+    </p>
+    <div class="contact-links">
+        <a href="https://github.com/Jakobb32866" target="_blank" class="cl-item">
+            <span class="cl-icon">GH</span>
+            <span class="cl-body">
+                <span class="cl-label">GitHub</span>
+                <span class="cl-val">github.com/Jakobb32866</span>
+            </span>
+            <span class="cl-arrow">→</span>
+        </a>
+
+        <button class="cl-item" @onclick="CopyEmail">
+            <span class="cl-icon">@("@")</span>
+            <span class="cl-body">
+                <span class="cl-label">Email</span>
+                <span class="cl-val">jaszoch@gmail.com</span>
+            </span>
+            <span class="cl-arrow">@(_copied ? (State.Lang == "pl" ? "skopiowano!" : "copied!") : "→")</span>
+        </button>
+
+        <a href="https://www.linkedin.com/in/jakub-szochner-6a708134a/" target="_blank" class="cl-item">
+            <span class="cl-icon">in</span>
+            <span class="cl-body">
+                <span class="cl-label">LinkedIn</span>
+                <span class="cl-val">linkedin.com/in/jakub-szochner-6a708134a/</span>
+            </span>
+            <span class="cl-arrow">→</span>
+        </a>
+    </div>
+</div>
+
+@code {
+    private bool _copied = false;
+
+    private async Task CopyEmail()
+    {
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", "jakub@example.com");
+        _copied = true;
+        StateHasChanged();
+        await Task.Delay(2000);
+        _copied = false;
+        StateHasChanged();
+    }
+    
+    protected override void OnInitialized()
+        => State.OnChange += StateHasChanged;
+
+    public void Dispose()
+        => State.OnChange -= StateHasChanged;
+}

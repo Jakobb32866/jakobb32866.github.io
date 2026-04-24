@@ -1,0 +1,49 @@
+.page-header { padding: 3.5rem 0 2.5rem; }
+.page-label {
+    font-size: .65rem; color: var(--accent); letter-spacing: .2em;
+    text-transform: uppercase; margin-bottom: .7rem;
+}
+.page-title {
+    font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800;
+    letter-spacing: -.04em; line-height: 1;
+}
+
+.about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem;
+    padding-bottom: 5rem;
+}
+.about-text p {
+    font-size: .9rem; color: var(--fg2); line-height: 1.85;
+    margin-bottom: 1.1rem;
+}
+.about-text p strong { color: var(--fg); font-weight: 600; }
+
+.skills-label {
+    font-size: .65rem; color: var(--accent); letter-spacing: .18em;
+    text-transform: uppercase; margin-bottom: 1.4rem;
+}
+.skill-group { margin-bottom: 1.4rem; }
+.skill-group-key {
+    font-size: .62rem; color: var(--fg3); letter-spacing: .13em;
+    text-transform: uppercase; margin-bottom: .55rem;
+}
+.skill-tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+.skill-tag {
+    font-size: .72rem; padding: .2rem .6rem;
+    border: 1px solid var(--border); color: var(--fg2);
+    transition: border-color .15s, color .15s;
+}
+.skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+@media (max-width: 600px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+
+.hss {
+    font-size: .68rem; padding: .22rem .55rem;
+    border: 1px solid var(--border); color: var(--fg2);
+    background: none;
+    transition: border-color .15s, color .15s;
+    cursor: pointer;
+}
+.hss:hover { border-color: var(--accent); color: var(--accent); }

@@ -1,0 +1,116 @@
+﻿@page "/"
+@using PortfolioSite.Models
+@inject AppState State
+@inject NavigationManager Nav
+@using PortfolioSite.Models
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+<div class="home-page">
+    <div class="home-canvas-wrap">
+        <canvas @ref="_canvas"></canvas>
+    </div>
+    <div class="home-id">
+        <span class="hi-name">Jakub Szochner</span>
+        <span class="hi-sep"> — </span>
+        <span class="hi-role">@(State.Lang == "pl" ? "programista & student" : "developer & student")</span>
+        <span class="hi-loc"> // @(State.Lang == "pl" ? "Warszawa" : "Warsaw")</span>
+    </div>
+
+    <div class="home-divider"></div>
+
+    <div class="home-content">
+        <div class="hs-block">
+            <div class="hs-head">
+                <span class="hs-label">@(State.Lang == "pl" ? "// ostatnie prace" : "// recent works")</span>
+                <button class="hs-more" @onclick='() => Nav.NavigateTo("/works")'>@(State.Lang == "pl" ? "więcej →" : "more →")</button>
+            </div>
+            <div class="hs-works">
+                @foreach (var item in WorksData.All.Take(5))
+                {
+                    <button class="hsw hsw--@item.Type" @onclick='() => Nav.NavigateTo("/works/" + item.Slug)'>
+                        <span class="hsw-badge">@(item.Type == "blog" ? "BLOG" : "PROJ")</span>
+                        <span class="hsw-title">@item.TitlePl</span>
+                        <span class="hsw-date">@item.Date</span>
+                    </button>
+                }
+            </div>
+        </div>
+
+        <div class="hs-block">
+            <div class="hs-head">
+                <span class="hs-label">@(State.Lang == "pl" ? "// o mnie" : "// about")</span>
+                <button class="hs-more" @onclick='() => Nav.NavigateTo("/about")'>@(State.Lang == "pl" ? "więcej →" : "more →")</button>
+            </div>
+            <p class="hs-bio">
+                <!-- TODO zmienić ten krindżowy opis --->
+                @(State.Lang == "pl"
+                    ? "Programista i student PJATK w Polsce. Buduję w C# i Blazor, bawię się chmurą i architekturą. Uczę się każdego dnia."
+                    : "Developer and CS student in Poland. Building with C# and Blazor, exploring cloud and architecture. Learning every day.")
+            </p>
+            <div class="hs-skills">
+                @foreach (var skill in SkillsData.All)
+                {
+                    <button class="hss" @onclick='() => Nav.NavigateTo("/works?tag=" + skill.Name)'>@skill.Name</button>
+                }
+            </div>
+        </div>
+
+        <div class="hs-block">
+            <div class="hs-head">
+                <span class="hs-label">@(State.Lang == "pl" ? "// kontakt" : "// contact")</span>
+            </div>
+            <!-- TODO podmienić na prawdziwe dane, można zrobić lekki redesign --->
+            <div class="hs-contacts">
+                <a href="https://github.com/Jakobb32866" target="_blank" class="hsc">
+                    <span class="hsc-icon">GH</span>
+                    <span class="hsc-val">github.com/Jakobb32866</span>
+                    <span class="hsc-arr">→</span>
+                </a>
+                <a href="mailto:jaszoch@gmail.com" class="hsc">
+                    <span class="hsc-icon">@("@")</span>
+                    <span class="hsc-val">jaszoch@gmail.com</span>
+                    <span class="hsc-arr">→</span>
+                </a>
+                <a href="https://www.linkedin.com/in/jakub-szochner-6a708134a/" target="_blank" class="hsc">
+                    <span class="hsc-icon">in</span>
+                    <span class="hsc-val">linkedin.com/in/jakub-szochner-6a708134a/</span>
+                    <span class="hsc-arr">→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private ElementReference _canvas;
+    private IJSObjectReference? _jsModule;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./js/site.js");
+            var skills = SkillsData.All.Select(s => s.Name).ToArray();
+            await _jsModule.InvokeVoidAsync("startRadar", _canvas, skills);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        State.OnChange -= StateHasChanged;
+        if (_jsModule != null)
+        {
+            await _jsModule.InvokeVoidAsync("stopRadar");
+            await _jsModule.DisposeAsync();
+        }
+    }
+    
+    
+}

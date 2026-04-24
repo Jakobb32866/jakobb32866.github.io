@@ -1,0 +1,61 @@
+@page "/about"
+@using PortfolioSite.Models
+@inject AppState State
+@inject NavigationManager Nav
+@implements IDisposable
+
+<div class="about-page">
+    <div class="page-header">
+        <div class="page-label">@(State.Lang == "pl" ? "// o_mnie" : "// about")</div>
+        <h1 class="page-title">@(State.Lang == "pl" ? "Kim jestem" : "Who I am")</h1>
+    </div>
+
+    <div class="about-grid">
+        <div class="about-text">
+            @if (State.Lang == "pl")
+            {
+                <p>Cześć, jestem <strong>Jakub</strong> — programista i student PJATK w Polsce. Fascynuje mnie ekosystem .NET, architektura oprogramowania i wszystko co stoi między pomysłem a działającym produktem.</p>
+                <p>Piszę głównie w <strong>C# / Blazor</strong>, ale sięgam też po Javę, SQL i cokolwiek aktualnie rozwiązuje problem.</p>
+            }
+            else
+            {
+                <p>Hey, I'm <strong>Jakub</strong> — a developer and CS student in Poland. I'm fascinated by the .NET ecosystem, software architecture, and everything between an idea and a working product.</p>
+                <p>I write mostly in <strong>C# / Blazor</strong>, but I'll reach for Java, SQL, or whatever solves the problem.</p>
+            }
+        </div>
+
+        <div class="about-skills">
+            <div class="skills-label">Stack</div>
+
+            @foreach (var group in SkillsData.All.GroupBy(s => s.Category))
+            {
+                <div class="skill-group">
+                    <div class="skill-group-key">@CategoryLabel(group.Key)</div>
+
+                    <div class="skill-tags">
+                        @foreach (var skill in group)
+                        {
+                            <button class="hss" @onclick='() => Nav.NavigateTo("/works?tag=" + skill.Name)'>@skill.Name</button>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code
+{
+    protected override void OnInitialized()
+        => State.OnChange += StateHasChanged;
+
+    public void Dispose()
+        => State.OnChange -= StateHasChanged;
+
+    private string CategoryLabel(string key) => key switch {
+        "backend"  => State.Lang == "pl" ? "Backend"   : "Backend",
+        "frontend" => State.Lang == "pl" ? "Frontend"  : "Frontend",
+        "tools"    => State.Lang == "pl" ? "Narzędzia" : "Tools",
+        _          => key
+    };
+}

@@ -1,0 +1,93 @@
+@page "/works"
+@inject AppState State
+@using PortfolioSite.Models
+@inject NavigationManager Nav
+@implements IDisposable
+
+<div class="works-page">
+    <div class="page-header">
+        <div class="page-label">@(State.Lang == "pl" ? "// prace" : "// works")</div>
+        <h1 class="page-title">@(State.Lang == "pl" ? "Blog & Projekty" : "Blog & Projects")</h1>
+    </div>
+
+    <div class="works-controls">
+        <div class="type-filter">
+            <button class="tf-btn @(_typeFilter == "all"     ? "active" : "")" @onclick='() => _typeFilter = "all"'>@(State.Lang == "pl" ? "Wszystko" : "All")</button>
+            <button class="tf-btn @(_typeFilter == "blog"    ? "active" : "")" @onclick='() => _typeFilter = "blog"'>Blog</button>
+            <button class="tf-btn @(_typeFilter == "project" ? "active" : "")" @onclick='() => _typeFilter = "project"'>@(State.Lang == "pl" ? "Projekt" : "Project")</button>
+        </div>
+        <div class="tag-filter">
+            <span class="tag-filter-label">@(State.Lang == "pl" ? "Tagi:" : "Tags:")</span>
+            <div class="tag-cloud">
+                @foreach (var tag in AllTags)
+                {
+                    <button class="tag-btn @(_activeTags.Contains(tag) ? "active" : "")"
+                            @onclick="() => ToggleTag(tag)">
+                        @tag
+                    </button>
+                }
+            </div>
+            @if (_activeTags.Count > 0)
+            {
+                <button class="tag-clear" @onclick="() => _activeTags.Clear()">@(State.Lang == "pl" ? "wyczyść" : "clear")</button>
+            }
+        </div>
+    </div>
+
+    <div class="works-list">
+        @foreach (var item in Filtered)
+        {
+            <div class="we we--@item.Type">
+                <div class="we-header" @onclick='() => Nav.NavigateTo("/works/" + item.Slug)'>
+                    <div class="we-type-badge">
+                        <span class="we-type-text">@(item.Type == "blog" ? "BLOG" : "PROJ")</span>
+                    </div>
+                    <div class="we-center">
+                        <div class="we-title">@(State.Lang == "pl" ? item.TitlePl : item.TitleEn)</div>
+                        <div class="we-tags-inline">
+                            @foreach (var tag in item.Tags)
+                            {
+                                <span class="we-tag-inline">@tag</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="we-right">
+                        <span class="we-date">@item.Date</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private string _typeFilter = "all";
+    private HashSet<string> _activeTags = [];
+
+    private void ToggleTag(string tag)
+    {
+        if (!_activeTags.Remove(tag))
+            _activeTags.Add(tag);
+    }
+
+    private IEnumerable<WorkItem> Filtered => WorksData.All.Where(w =>
+        (_typeFilter == "all" || w.Type == _typeFilter) &&
+        (_activeTags.Count == 0 || _activeTags.Any(t => w.Tags.Contains(t)))
+    );
+
+    private IEnumerable<string> AllTags =>
+        WorksData.All.SelectMany(w => w.Tags).Distinct().OrderBy(t => t);
+    
+    [SupplyParameterFromQuery(Name = "tag")]
+    public string? TagFromQuery { get; set; }
+
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+        if (!string.IsNullOrEmpty(TagFromQuery))
+            _activeTags.Add(TagFromQuery);
+    }
+
+    public void Dispose()
+        => State.OnChange -= StateHasChanged;
+}

@@ -1,0 +1,28 @@
+.page-header { padding: 3.5rem 0 2.5rem; }
+.page-label {
+    font-size: .65rem; color: var(--accent); letter-spacing: .2em;
+    text-transform: uppercase; margin-bottom: .7rem;
+}
+.page-title {
+    font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800;
+    letter-spacing: -.04em; line-height: 1;
+}
+.contact-sub {
+    font-size: .88rem; color: var(--fg2); line-height: 1.7;
+    margin-bottom: 2.5rem; max-width: 500px;
+}
+.contact-links { display: flex; flex-direction: column; gap: .6rem; }
+.cl-item {
+    display: flex; align-items: center; gap: 1rem;
+    border: 1px solid var(--border);
+    padding: 1rem 1.2rem;
+    color: var(--fg); background: none; text-align: left; width: 100%;
+    transition: border-color .2s, background .2s;
+}
+.cl-item:hover { border-color: var(--accent); background: var(--accent-dim); }
+.cl-item:hover .cl-arrow { color: var(--accent); }
+.cl-icon { font-size: .7rem; font-weight: 700; letter-spacing: .06em; color: var(--accent); min-width: 28px; }
+.cl-body { display: flex; flex-direction: column; gap: .15rem; flex: 1; }
+.cl-label { font-size: .82rem; font-weight: 600; }
+.cl-val   { font-size: .72rem; color: var(--fg2); }
+.cl-arrow { font-size: .85rem; color: var(--fg3); transition: color .2s; }

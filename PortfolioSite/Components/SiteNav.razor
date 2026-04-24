@@ -1,0 +1,77 @@
+@inject AppState State
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+@implements IDisposable
+
+<nav class="site-nav">
+    <button class="nav-logo" @onclick='() => Nav.NavigateTo("/")'>
+        <span class="nl-prompt">&gt;&nbsp;</span>jaszoch.dev<span class="nl-cursor"></span>
+    </button>
+
+    <div class="nav-links">
+        <button class="nav-link @ActiveClass("/about")"   @onclick='() => Nav.NavigateTo("/about")'>@(State.Lang == "pl" ? "o mnie" : "about")</button>
+        <button class="nav-link @ActiveClass("/works")"   @onclick='() => Nav.NavigateTo("/works")'>@(State.Lang == "pl" ? "prace" : "works")</button>
+        <button class="nav-link @ActiveClass("/contact")" @onclick='() => Nav.NavigateTo("/contact")'>@(State.Lang == "pl" ? "kontakt" : "contact")</button>
+    </div>
+
+    <div class="nav-controls">
+        <button class="ctrl-btn @(State.Lang == "pl" ? "active" : "")" @onclick='() => SwitchLang("pl")'>PL</button>
+        <button class="ctrl-btn @(State.Lang == "en" ? "active" : "")" @onclick='() => SwitchLang("en")'>EN</button>
+        <button class="ctrl-btn" @onclick="ToggleTheme">@(State.Theme == "dark" ? "☽" : "☀")</button>
+    </div>
+</nav>
+
+@code {
+    private IJSObjectReference? _jsModule;
+
+    private string ActiveClass(string path) =>
+        Nav.Uri.Contains(path) ? "active" : "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./js/site.js");
+            var theme = await _jsModule.InvokeAsync<string?>("storageGet", "theme") ?? "dark";
+            var lang  = await _jsModule.InvokeAsync<string?>("storageGet", "lang")  ?? "pl";
+            State.SetTheme(theme);
+            State.SetLang(lang);
+            await _jsModule.InvokeVoidAsync("applyTheme", theme);
+        }
+    }
+
+    private async Task ToggleTheme()
+    {
+        var next = State.Theme == "dark" ? "light" : "dark";
+        State.SetTheme(next);
+        if (_jsModule != null)
+        {
+            await _jsModule.InvokeVoidAsync("applyTheme", next);
+            await _jsModule.InvokeVoidAsync("storageSet", "theme", next);
+        }
+    }
+
+    private async Task SwitchLang(string lang)
+    {
+        State.SetLang(lang);
+        if (_jsModule != null)
+            await _jsModule.InvokeVoidAsync("storageSet", "lang", lang);
+    }
+
+    protected override void OnInitialized()
+    {
+        Nav.LocationChanged += OnLocationChanged;
+        State.OnChange += StateHasChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        Nav.LocationChanged -= OnLocationChanged;
+        State.OnChange -= StateHasChanged;
+    }
+}
