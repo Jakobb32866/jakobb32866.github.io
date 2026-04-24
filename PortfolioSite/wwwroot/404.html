@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        var path = window.location.pathname;
+        var query = window.location.search;
+        var hash = window.location.hash;
+        var redirect = window.location.origin + '/PortfolioSite/?p=' +
+            encodeURIComponent(path.slice('/PortfolioSite'.length) + query + hash);
+        window.location.replace(redirect);
+    </script>
+</head>
+</html>
