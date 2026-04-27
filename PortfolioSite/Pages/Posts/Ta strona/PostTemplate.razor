@@ -1,0 +1,65 @@
+@page "/works/ta-strona"
+@inject NavigationManager Nav
+@inject AppState State
+@using PortfolioSite.Models
+@implements IDisposable
+
+<div class="post-page">
+    <button class="post-back" @onclick='() => Nav.NavigateTo("/works")'>@(State.Lang == "pl" ? "← prace" : "← works")</button>
+
+    <div class="page-header">
+        <div class="page-label">// @_item?.Type</div>
+        <h1 class="page-title">@(State.Lang == "pl" ? _item?.TitlePl : _item?.TitleEn)</h1>
+        <div class="post-meta">
+            <span class="post-date">@_item?.Date</span>
+            @foreach (var tag in _item?.Tags ?? new List<string>())
+            {
+                <span class="we-tag-inline">@tag</span>
+            }
+        </div>
+        <div class="post-links">
+            @if (_item?.GitHubUrl != null)
+            {
+                <a href="@_item.GitHubUrl" target="_blank" class="post-link">GitHub →</a>
+            }
+            @if (_item?.LiveUrl != null)
+            {
+                <a href="@_item.LiveUrl" target="_blank" class="post-link post-link--live">Live →</a>
+            }
+        </div>
+    </div>
+
+    <div class="post-content">
+        @if (State.Lang == "pl")
+        {
+            <h2>Jak zbudowałem swoje portfolio w Blazor WASM</h2>
+            <p>Stack jest prosty: Blazor WebAssembly, html + css oraz JavaScript tam gdzie Blazor nie dawał rady. Całość siedzi na github pages i jest automatycznie deployowana przez github actions. Do draftu designu użyłem narzędzia AI Claude Design.</p>
+            <p>Najciekawszym kawałkiem kodu jest animacja radaru na stronie głównej. Punkty które się tam pojawiają mają losowe rozmieszczenie które zmienia się przy każdym odświeżeniu i są pobierane z klasy SkillsData która obsługuje również skille w home page i sekcji "o mnie". Animacja renderowana jest przez JSInterop.</p>
+            <p>Posty na blogu to elementy .razor, dzięki czemu mogę wrzucać tutaj interaktywne elementy i kawałki kodu.</p>
+            <p>Strona posiada dwa motywy i jest dwujęzyczna, oraz zapamiętuje twój wybór (możesz to przetestować).</p>
+            <p>Mam nadzieję, że stronka ci się podoba, jeśli masz jakieś sugestie to zapraszam do kontaktu.</p>
+        }
+        else
+        {
+            <h2>How I built my portfolio in Blazor WASM</h2>
+            <p>The stack is simple: Blazor WebAssembly, HTML + CSS, and JavaScript where Blazor couldn't handle it. Everything is hosted on GitHub Pages with automatic deployment via GitHub Actions. For the initial design draft I used the AI tool Claude Design.</p>
+            <p>The most interesting piece of code is the radar animation on the home page. The blips have randomized positions that change on every page reload, and they're pulled from the SkillsData class — the same one that powers the skills on the home page and the about section. The animation is rendered via JSInterop.</p>
+            <p>Blog posts are individual .razor components, which means I can embed interactive elements and code snippets directly in the content.</p>
+            <p>The site has two themes and is bilingual, and it remembers your preference — feel free to test it.</p>
+            <p>Hope you like it. If you have any suggestions, feel free to reach out.</p>
+        }
+    </div>
+</div>
+
+@code {
+    private WorkItem? _item;
+
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+        _item = WorksData.All.FirstOrDefault(w => w.Slug == "ta-strona");
+    }
+
+    public void Dispose()
+        => State.OnChange -= StateHasChanged;
+}

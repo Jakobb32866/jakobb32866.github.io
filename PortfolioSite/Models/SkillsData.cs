@@ -9,7 +9,6 @@ public static class SkillsData
         new("C#",           "backend"),
         new(".NET",       "backend"),
         new("Blazor",       "backend"),
-        new("Swing", "backend"),
         new("Java",         "backend"),
         new("SQL",   "backend"),
         new("AWS",          "backend"),
@@ -18,7 +17,9 @@ public static class SkillsData
         
         new("HTML",   "frontend"),
         new("CSS",        "frontend"),
+        new("Swing", "frontend"),
 
+        new("GitHub",          "tools"),
         new("Git",          "tools"),
         
         new("Rider",        "IDE"),
