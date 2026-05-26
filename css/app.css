@@ -1,4 +1,8 @@
 /* ── TOKENY ── */
+html {
+    background-color: var(--bg);
+}
+
 :root {
     --bg:          #111111;
     --bg2:         #1a1a1a;
