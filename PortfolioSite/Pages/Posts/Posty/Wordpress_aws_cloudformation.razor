@@ -1,4 +1,4 @@
-@page "/works/wordpress_aws_cloudformation"
+@page "/works/wordpress-aws-cloudformation"
 @inject NavigationManager Nav
 @inject AppState State
 @using PortfolioSite.Models
@@ -57,7 +57,7 @@
     protected override void OnInitialized()
     {
         State.OnChange += StateHasChanged;
-        _item = WorksData.All.FirstOrDefault(w => w.Slug == "wordpress_aws_cloudformation");
+        _item = WorksData.All.FirstOrDefault(w => w.Slug == "wordpress-aws-cloudformation");
     }
 
     public void Dispose()
