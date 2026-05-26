@@ -1,0 +1,65 @@
+@page "/works/wordpress_aws_cloudformation"
+@inject NavigationManager Nav
+@inject AppState State
+@using PortfolioSite.Models
+@implements IDisposable
+
+<div class="post-page">
+    <button class="post-back" @onclick='() => Nav.NavigateTo("/works")'>@(State.Lang == "pl" ? "← prace" : "← works")</button>
+
+    <div class="page-header">
+        <div class="page-label">// @_item?.Type</div>
+        <h1 class="page-title">@(State.Lang == "pl" ? _item?.TitlePl : _item?.TitleEn)</h1>
+        <div class="post-meta">
+            <span class="post-date">@_item?.Date</span>
+            @foreach (var tag in _item?.Tags ?? new List<string>())
+            {
+                <span class="we-tag-inline">@tag</span>
+            }
+        </div>
+        <div class="post-links">
+            @if (_item?.GitHubUrl != null)
+            {
+                <a href="@_item.GitHubUrl" target="_blank" class="post-link">GitHub →</a>
+            }
+            @if (_item?.LiveUrl != null)
+            {
+                <a href="@_item.LiveUrl" target="_blank" class="post-link post-link--live">Live →</a>
+            }
+        </div>
+    </div>
+
+    <div class="post-content">
+        @if (State.Lang == "pl")
+        {
+            <p>Projekt zaliczeniowy z przedmiotu PCO - Podstawy chmury obliczeniowej.</p>
+            <p>Cel: zamiast klikać w konsoli, wszystko ma być w YAMLu a AWS ma ogarniać to samemu</p>
+            <p>6 stacków, każdy odpowiada za jedną warstwę. Sieć, security groupy, EFS, baza, bastiony, aplikacja.</p>
+            <p>Problem który był dla mnie zaskoczeniem: ASG startuje kilka instancji naraz, każda odpala ten sam skrypt instalacyjny. Bez synchronizacji trzy instancje próbują równocześnie kopiować WordPress do tego samego folderu na EFS. Rozwiązanie - mkdir na NFS jest atomowe, więc używam go jako distributed lock. Kto pierwszy wykona mkdir .install_lock ten instaluje.</p>
+            <p>Środowisko wybrane przy odpalaniu skryptu (TEST/DEVELOPER/PRODUCTION) zmienia wszystko - typ instancji, rozmiar bazy, liczbę NAT GW, Multi-AZ, min/max ASG.</p>
+            <p>Działa w us-east-1 i us-west-2 bez dotykania plików.</p>
+        }
+        else
+        {
+            <p>A graded project for PCO - Cloud Computing Fundamentals.</p>
+            <p>Goal: instead of clicking through the console, everything should be in YAML and AWS should figure out the rest itself.</p>
+            <p>6 stacks, each responsible for one layer. Network, security groups, EFS, database, bastions, application.</p>
+            <p>The problem that caught me off guard: ASG launches multiple instances at once, each running the same install script. Without synchronization three instances try to copy WordPress into the same EFS folder simultaneously. The fix - mkdir on NFS is atomic, so I use it as a distributed lock. Whoever runs mkdir .install_lock first does the install.</p>
+            <p>The environment chosen when running the script (TEST/DEVELOPER/PRODUCTION) changes everything - instance type, database size, number of NAT GWs, Multi-AZ, ASG min/max.</p>
+            <p>Works in us-east-1 and us-west-2 without touching the files.</p>
+        }
+    </div>
+</div>
+
+@code {
+    private WorkItem? _item;
+
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+        _item = WorksData.All.FirstOrDefault(w => w.Slug == "wordpress_aws_cloudformation");
+    }
+
+    public void Dispose()
+        => State.OnChange -= StateHasChanged;
+}

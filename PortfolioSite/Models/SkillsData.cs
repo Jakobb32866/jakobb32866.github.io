@@ -8,10 +8,12 @@ public static class SkillsData
     [
         new("C#",           "backend"),
         new(".NET",       "backend"),
+        new ("REST API", "backend"),
         new("Blazor",       "backend"),
         new("Java",         "backend"),
         new("SQL",   "backend"),
         new("AWS",          "backend"),
+        new("CloudFormation",  "backend"),
         new("Python",          "backend"),
         new("C++",          "backend"),
         
@@ -23,8 +25,5 @@ public static class SkillsData
         new("Git",          "tools"),
         
         new("ML", "Artificial Intelligence"),
-        
-        new("Rider",        "IDE"),
-        new("IntelliJ",        "IDE"),
     ];
 }

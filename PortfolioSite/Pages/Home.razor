@@ -44,8 +44,8 @@
             <p class="hs-bio">
                 <!-- TODO zmienić ten krindżowy opis --->
                 @(State.Lang == "pl"
-                    ? "Programista i student PJATK w Polsce. Buduję w C# i Blazor, bawię się chmurą i architekturą. Uczę się każdego dnia."
-                    : "Developer and CS student in Poland. Building with C# and Blazor, exploring cloud and architecture. Learning every day.")
+                    ? "Programista i student PJATK. Buduję w C# i Blazor, bawię się chmurą i architekturą. Fascynuje mnie uczeniem maszynowym."
+                    : "Developer and CS student at PJATK. I build with C# and Blazor, play with cloud and architecture. Fascinated by machine learning.")
             </p>
             <div class="hs-skills">
                 @foreach (var skill in SkillsData.All)
@@ -59,7 +59,6 @@
             <div class="hs-head">
                 <span class="hs-label">@(State.Lang == "pl" ? "// kontakt" : "// contact")</span>
             </div>
-            <!-- TODO podmienić na prawdziwe dane, można zrobić lekki redesign --->
             <div class="hs-contacts">
                 <a href="https://github.com/Jakobb32866" target="_blank" class="hsc">
                     <span class="hsc-icon">GH</span>
