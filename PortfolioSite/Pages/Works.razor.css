@@ -69,3 +69,9 @@
     transition: all .15s; white-space: nowrap;
 }
 .tag-clear:hover { border-color: var(--accent); color: var(--accent); }
+.tag-clear--dim {
+    opacity: 0.35;
+}
+.tag-clear {
+    transition: opacity .15s;
+}

@@ -7,6 +7,10 @@ public static class WorksData
 {
     public static readonly List<WorkItem> All =
     [
+        new("the-abyss-game", "project", "2026-05", "Gra \"The Abyss\" w Pythonie",
+            "\"The Abyss\" game in Python", ["Python", "Pygame"],
+            null, null), //TODO dodać linka na githuba jak wrzucę
+        
         new("wordpress-aws-cloudformation", "project", "2026-05", "WordPress na AWS w CloudFormation",
             "WordPress on AWS with CloudFormation", ["AWS", "CloudFormation", "WordPress"],
             "https://github.com/Jakobb32866/cloudformation_wordpress_", null),

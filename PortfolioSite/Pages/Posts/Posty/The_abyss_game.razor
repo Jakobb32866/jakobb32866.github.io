@@ -1,0 +1,79 @@
+@page "/works/the-abyss-game"
+@inject NavigationManager Nav
+@inject AppState State
+@using PortfolioSite.Models
+@implements IDisposable
+
+<div class="post-page">
+    <button class="post-back" @onclick='() => Nav.NavigateTo("/works")'>@(State.Lang == "pl" ? "← prace" : "← works")</button>
+
+    <div class="page-header">
+        <div class="page-label">// @_item?.Type</div>
+        <h1 class="page-title">@(State.Lang == "pl" ? _item?.TitlePl : _item?.TitleEn)</h1>
+        <div class="post-meta">
+            <span class="post-date">@_item?.Date</span>
+            @foreach (var tag in _item?.Tags ?? new List<string>())
+            {
+                <span class="we-tag-inline">@tag</span>
+            }
+        </div>
+        <div class="post-links">
+            @if (_item?.GitHubUrl != null)
+            {
+                <a href="@_item.GitHubUrl" target="_blank" class="post-link">GitHub →</a>
+            }
+            @if (_item?.LiveUrl != null)
+            {
+                <a href="@_item.LiveUrl" target="_blank" class="post-link post-link--live">Live →</a>
+            }
+        </div>
+    </div>
+
+    <div class="post-content">
+        @if (State.Lang == "pl")
+        {
+            <h2>Jak zrobiłem prostą grę w Pythonie</h2>
+            <p>Projekt zaliczeniowy z przedmiotu PPY - Jako że zaliczyłem przedmiot samym kolokwium, a ponieważ była duża dowolność w wyborze projektu, postanowiłem zaryzykować i postawić na coś ambitniejszego. W ten sposób powstał pomysł prostej gry w pygame.</p>
+            <p>Cała gra napisana jest rzecz jasna w Pythonie, z użyciem pygame do renderowania. Mapa gry to labirynt 60x90 generowany algorytmem DFS z losowym wyburzaniem. Mapa generowana jest z seeda, co pomaga przy zapisie i wczytywaniu gry - zapisywanie każdego pola byłoby bardzo żmudne i niepotrzebnie zajmowałoby miejsce w pamięci.</p>
+            <p>Gracz wykonuje akcje za pomocą komend tekstowych, porusza się po mapie w celu pokonywania potworów i zdobywania wyposażenia. W labiryncie nie jesteśmy sami - bez przerwy chodzi za nami finalny boss. Do pathfindingu użyłem algorytmu BFS (przydała się wiedza z "Algorytmów i struktur danych")</p>
+            <p>Stan gry zapisywany jest za pomocą JSON-a, przy wczytywaniu mapa jest generowana na nowo z zapisanego seeda.</p>
+            <figure>
+                <img src="images/blog/the_abyss_game.png" alt="Screenshot UI gry The Abyss" class="blog-screenshot" loading="lazy" />
+                <figcaption>Efekty UI w akcji.</figcaption>
+            </figure>
+            <h2>Co wyszło, a co zrobiłbym inaczej?</h2>
+            <p>Moim największym sukcesem jest UI z wyraźnymi efektami CRT (scanlines, vignette, glitch, jitter, noise, pulse) - to wszystko sprawia, że prosta gra wygląda bardzo żywo. Gra jest renderowana na rozdzielczości 640x480, a następnie skalowana do pełnego ekranu z zachowaniem proporcji.</p>
+            <p>Moim największym błędem jest sama architektura klasy UI, która niepotrzebnie obsługiwała stany gry i game loop, przez co urosła do rozmiarów trudnego do czytania i utrzymania molocha. Gdybym miał kiedyś kontynuować projekt, zdecydowanie wydzieliłbym część logiki do osobnych klas.</p>
+            <p>Projekt spełnia wszystkie wymagania techniczne, ale co najważniejsze jestem z niego bardzo zadowolony i dobrze się bawiłem przy tworzeniu, pomimo mojej lekkiej awersji do używania Pythona przy tworzeniu programów opartych na programowaniu obiektowym.</p>
+        }
+        else
+        {
+            <h2>How I built a simple game in Python</h2>
+            <p>Final project for my PPY course - since I'd already passed the course on the midterm exam alone, and given there was a lot of freedom in choosing the project, I decided to take a risk and aim for something more ambitious. That's how the idea for a simple pygame game came about.</p>
+            <p>The whole game is, naturally, written in Python, using pygame for rendering. The game map is a 60x90 maze generated with a DFS algorithm and random wall breaking. The map is generated from a seed, which helps with saving and loading - saving every single tile would be tedious and would unnecessarily take up memory.</p>
+            <p>The player performs actions through text commands, moving around the map to defeat monsters and collect gear. You're not alone in the maze - the final boss is constantly walking after you. I used BFS for pathfinding (knowledge from "Algorithms and Data Structures" came in handy).</p>
+            <p>Game state is saved as JSON, and on load the map is regenerated from the saved seed.</p>
+            <figure>
+                <img src="images/blog/the_abyss_game.png" alt="Screenshot of The Abyss game UI" class="blog-screenshot" loading="lazy" />
+                <figcaption>UI effects in action.</figcaption>
+            </figure>
+            <h2>What worked, and what I'd do differently?</h2>
+            <p>My biggest success is the UI with pronounced CRT effects (scanlines, vignette, glitch, jitter, noise, pulse) - all of which make a simple game feel really alive. The game is rendered at 640x480 and then scaled up to fullscreen while preserving the aspect ratio.</p>
+            <p>My biggest mistake is the architecture of the UI class itself, which unnecessarily handled game state and the game loop, ballooning into a monolith that's hard to read and maintain. If I were ever to continue the project, I'd definitely split part of the logic out into separate classes.</p>
+            <p>The project meets all the technical requirements, but more importantly I'm really happy with it and had a good time building it - despite my mild aversion to using Python for object-oriented programs.</p>
+        }
+    </div>
+</div>
+
+@code {
+    private WorkItem? _item;
+
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+        _item = WorksData.All.FirstOrDefault(w => w.Slug == "the-abyss-game");
+    }
+
+    public void Dispose()
+        => State.OnChange -= StateHasChanged;
+}
