@@ -164,3 +164,21 @@ button { font-family: var(--font); cursor: pointer; }
     overflow-x: auto; font-size: .82rem; color: var(--fg2);
 }
 .post-content code { background: none; padding: 0; color: var(--accent); }
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    image-rendering: pixelated;
+}
+
+.post-content figure {
+    margin: 1.5rem 0;
+}
+.post-content figcaption {
+    font-size: .72rem;
+    color: var(--fg3);
+    letter-spacing: .06em;
+    margin-top: .6rem;
+    text-align: center;
+}

@@ -1,12 +1,12 @@
 self.assetsManifest = {
-  "version": "mT+fReSB",
+  "version": "2qxY5C/B",
   "assets": [
     {
       "hash": "sha256-VKYIz10KkMkPBtI6Q7mhju+v67NJwp5Z98BWylo0MLM=",
       "url": "404.html"
     },
     {
-      "hash": "sha256-R/hstbhzlzvbL3adGzyNiCsOd/PLiAnfK4jRBQdWfF0=",
+      "hash": "sha256-CyvSIfQz7aeaKux1fmCZ1wNdGPBkuNwbvNW6yDh5zp8=",
       "url": "PortfolioSite.styles.css"
     },
     {
@@ -66,8 +66,8 @@ self.assetsManifest = {
       "url": "_framework/Microsoft.JSInterop.zljv0sq4pe.wasm"
     },
     {
-      "hash": "sha256-IKDgcUdJk3EnMVrKWzUrRgWhX5mUoGZ50rlB+GfIj7U=",
-      "url": "_framework/PortfolioSite.oe9uhdxspl.wasm"
+      "hash": "sha256-9j0kImw3d3PXDNHMDlFdz2XrPHZpM2kMQJaKdWQFQoA=",
+      "url": "_framework/PortfolioSite.ezlv1cnmcb.wasm"
     },
     {
       "hash": "sha256-HOWZfexOr0SnriauK0W2jzelyldR2giuWw2w9HQS8J4=",
@@ -158,10 +158,6 @@ self.assetsManifest = {
       "url": "_framework/blazor.webassembly.66stpp682q.js"
     },
     {
-      "hash": "sha256-GvhbdKvHh+TGHapSWLHg8KItVhq8jNT3mqFGK65YijU=",
-      "url": "_framework/dotnet.2hcbk45ajl.js"
-    },
-    {
       "hash": "sha256-i4MH1ttKidpkFY/9i4kRe+7ux5JQMZds+qXuSkJqeog=",
       "url": "_framework/dotnet.native.f749u69f30.wasm"
     },
@@ -172,6 +168,10 @@ self.assetsManifest = {
     {
       "hash": "sha256-YyudibIWETMKrLb+nAZdJ+xDY7HY6BWf6s32UAdcvCU=",
       "url": "_framework/dotnet.runtime.r2kbxkuujc.js"
+    },
+    {
+      "hash": "sha256-J8I++YgSpOd06PrCG+L4ej1raOMM8zGAeio3IsV3Yp8=",
+      "url": "_framework/dotnet.rzamdpbkdi.js"
     },
     {
       "hash": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
@@ -186,7 +186,7 @@ self.assetsManifest = {
       "url": "_framework/icudt_no_CJK.lfu7j35m59.dat"
     },
     {
-      "hash": "sha256-Fqn9VlecyZa9uHxQmaDz5lKia1kviT4uiBqJvtUUJZM=",
+      "hash": "sha256-voUuMW2CENDheCcF/CyasDazq38/5x56ci7p0t7/pBY=",
       "url": "css/app.css"
     },
     {
@@ -202,7 +202,11 @@ self.assetsManifest = {
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-Y2ypTM2jrMFbGIB7KoGmDRDQfeauTf8HRUMJIO6ZkBs=",
+      "hash": "sha256-f3FMGQ6ZI1UfeIQZYlS6Y31yOXSpdvYp7YzvPaSINjo=",
+      "url": "images/blog/the_abyss_game.png"
+    },
+    {
+      "hash": "sha256-UlWhaJqMUVum/ovs8cDE7vhaBOZTXWBDgVhOPmSzfqU=",
       "url": "index.html"
     },
     {

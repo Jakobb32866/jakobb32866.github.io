@@ -355,3 +355,9 @@
     transition: all .15s; white-space: nowrap;
 }
 .tag-clear:hover[b-farnjgcwns] { border-color: var(--accent); color: var(--accent); }
+.tag-clear--dim[b-farnjgcwns] {
+    opacity: 0.35;
+}
+.tag-clear[b-farnjgcwns] {
+    transition: opacity .15s;
+}
