@@ -1,5 +1,5 @@
 self.assetsManifest = {
-  "version": "vDbrn4Ak",
+  "version": "WMRNqF7m",
   "assets": [
     {
       "hash": "sha256-VKYIz10KkMkPBtI6Q7mhju+v67NJwp5Z98BWylo0MLM=",
@@ -66,8 +66,8 @@ self.assetsManifest = {
       "url": "_framework/Microsoft.JSInterop.zljv0sq4pe.wasm"
     },
     {
-      "hash": "sha256-V3dGxJ0r+L72WE/jWyEsTqsNtQjr3k4yd1nKP4KMotY=",
-      "url": "_framework/PortfolioSite.p0drqd60z5.wasm"
+      "hash": "sha256-Zk6wVvl3UvzbaSckTtIcqUNUktE7kvRIdrnTmUYkFC0=",
+      "url": "_framework/PortfolioSite.imzlqwfxhi.wasm"
     },
     {
       "hash": "sha256-HOWZfexOr0SnriauK0W2jzelyldR2giuWw2w9HQS8J4=",
@@ -170,8 +170,8 @@ self.assetsManifest = {
       "url": "_framework/dotnet.runtime.r2kbxkuujc.js"
     },
     {
-      "hash": "sha256-NffStNgWLqYGqblS1kfVkAYS+yPyF3yOwapz06NNFAE=",
-      "url": "_framework/dotnet.xd8ntsc28i.js"
+      "hash": "sha256-TWT+UUq21Yj+lBrCV+wpO1phRYBGhiyKLq47jSIxtnM=",
+      "url": "_framework/dotnet.v56epnh8oy.js"
     },
     {
       "hash": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
@@ -206,7 +206,7 @@ self.assetsManifest = {
       "url": "images/blog/the_abyss_game.png"
     },
     {
-      "hash": "sha256-kKYGb0a2X1E4huZ4cNLqHya7b6PGV0/yY6IySA3IKEs=",
+      "hash": "sha256-Z6jWQIOUS/XRygUjWaLp4Wkx+3qWa4BP1xohcJGtapY=",
       "url": "index.html"
     },
     {
