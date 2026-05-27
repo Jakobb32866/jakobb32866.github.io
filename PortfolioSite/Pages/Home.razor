@@ -19,23 +19,7 @@
     <div class="home-divider"></div>
 
     <div class="home-content">
-        <div class="hs-block">
-            <div class="hs-head">
-                <span class="hs-label">@(State.Lang == "pl" ? "// ostatnie prace" : "// recent works")</span>
-                <button class="hs-more" @onclick='() => Nav.NavigateTo("/works")'>@(State.Lang == "pl" ? "więcej →" : "more →")</button>
-            </div>
-            <div class="hs-works">
-                @foreach (var item in WorksData.All.Take(5))
-                {
-                    <button class="hsw hsw--@item.Type" @onclick='() => Nav.NavigateTo("/works/" + item.Slug)'>
-                        <span class="hsw-badge">@(item.Type == "blog" ? "BLOG" : "PROJ")</span>
-                        <span class="hsw-title">@item.TitlePl</span>
-                        <span class="hsw-date">@item.Date</span>
-                    </button>
-                }
-            </div>
-        </div>
-
+        
         <div class="hs-block">
             <div class="hs-head">
                 <span class="hs-label">@(State.Lang == "pl" ? "// o mnie" : "// about")</span>
@@ -51,6 +35,23 @@
                 @foreach (var skill in SkillsData.All)
                 {
                     <button class="hss" @onclick='() => Nav.NavigateTo("/works?tag=" + Uri.EscapeDataString(skill.Name))'>@skill.Name</button>
+                }
+            </div>
+        </div>
+
+        <div class="hs-block">
+            <div class="hs-head">
+                <span class="hs-label">@(State.Lang == "pl" ? "// ostatnie prace" : "// recent works")</span>
+                <button class="hs-more" @onclick='() => Nav.NavigateTo("/works")'>@(State.Lang == "pl" ? "więcej →" : "more →")</button>
+            </div>
+            <div class="hs-works">
+                @foreach (var item in WorksData.All.Take(5))
+                {
+                    <button class="hsw hsw--@item.Type" @onclick='() => Nav.NavigateTo("/works/" + item.Slug)'>
+                        <span class="hsw-badge">@(item.Type == "blog" ? "BLOG" : "PROJ")</span>
+                        <span class="hsw-title">@item.TitlePl</span>
+                        <span class="hsw-date">@item.Date</span>
+                    </button>
                 }
             </div>
         </div>
