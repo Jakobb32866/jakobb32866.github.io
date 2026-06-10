@@ -25,7 +25,7 @@ public static class WorksData
         
         new("ta-strona", "project", "2026-04",
             "Ta strona", "This website",
-            ["Blazor", "C#", ".NET", "HTML", "CSS", "Github", "Git", "JavaScript"],
+            ["Blazor", "C#", ".NET", "HTML", "CSS", "Github", "Git", "JavaScript", "Claude Design"],
             "https://github.com/Jakobb32866/jakobb32866.github.io", "https://jakobb32866.github.io")
     ];
 }
