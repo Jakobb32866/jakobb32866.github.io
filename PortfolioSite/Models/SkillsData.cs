@@ -11,6 +11,7 @@ public static class SkillsData
         new("REST API", "backend"),
         new("Blazor", "backend"),
         new("Java", "backend"),
+        new("Spring", "backend"),
         new("SQL", "backend"),
         new("AWS", "backend"),
         new("CloudFormation", "backend"),
@@ -19,6 +20,7 @@ public static class SkillsData
         
         new("HTML", "frontend"),
         new("CSS", "frontend"),
+        new ("JavaScript", "frontend"),
         new("Swing", "frontend"),
 
         new("GitHub", "tools"),

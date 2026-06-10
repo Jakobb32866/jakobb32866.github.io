@@ -7,9 +7,13 @@ public static class WorksData
 {
     public static readonly List<WorkItem> All =
     [
+        new WorkItem("spring-backpropagation-digit-classifier", "project", "2026-06", "Klasyfikator cyfr z propagacją wsteczną w Java Spring",
+            "Digit classifier with backpropagation in Java Spring", ["Java", "Spring", "ML", "REST API", "HTML", "CSS", "JavaScript", "Claude Design"],
+            "https://github.com/Jakobb32866/Digit_classifier_java_spring", null),
+        
         new("the-abyss-game", "project", "2026-05", "Gra \"The Abyss\" w Pythonie",
             "\"The Abyss\" game in Python", ["Python", "Pygame"],
-            null, null), //TODO dodać linka na githuba jak wrzucę
+            "https://github.com/Jakobb32866/the_abyss_game_PPY", null),
         
         new("wordpress-aws-cloudformation", "project", "2026-05", "WordPress na AWS w CloudFormation",
             "WordPress on AWS with CloudFormation", ["AWS", "CloudFormation", "WordPress"],

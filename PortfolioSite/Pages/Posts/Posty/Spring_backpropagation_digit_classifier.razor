@@ -1,0 +1,123 @@
+@page "/works/spring-backpropagation-digit-classifier"
+@inject NavigationManager Nav
+@inject AppState State
+@inject IJSRuntime JS
+@using PortfolioSite.Models
+@implements IDisposable
+
+<div class="post-page">
+    <button class="post-back" @onclick='() => Nav.NavigateTo("/works")'>@(State.Lang == "pl" ? "← prace" : "← works")</button>
+
+    <div class="page-header">
+        <div class="page-label">// @_item?.Type</div>
+        <h1 class="page-title">@(State.Lang == "pl" ? _item?.TitlePl : _item?.TitleEn)</h1>
+        <div class="post-meta">
+            <span class="post-date">@_item?.Date</span>
+            @foreach (var tag in _item?.Tags ?? new List<string>())
+            {
+                <span class="we-tag-inline">@tag</span>
+            }
+        </div>
+        <div class="post-links">
+            @if (_item?.GitHubUrl != null)
+            {
+                <a href="@_item.GitHubUrl" target="_blank" class="post-link">GitHub →</a>
+            }
+            @if (_item?.LiveUrl != null)
+            {
+                <a href="@_item.LiveUrl" target="_blank" class="post-link post-link--live">Live →</a>
+            }
+        </div>
+    </div>
+
+    <div class="post-content">
+        @if (State.Lang == "pl")
+        {
+            <h2>Klasyfikator cyfr od zera - skąd pomysł?</h2>
+            <p>Zadanie na przedmiot TPO - prosta aplikacja webowa w spring boocie z GUI, REST API i podstawowymi funkcjonalnościami CRUD. Szybko doszedłem do wniosku, że taki projekt to dobra baza pod stworzenie czegoś nietrywialnego, zwłaszcza że przedmiot miałem już zaliczony i nie miałem presji czasu. Zacząłem od prostych propozycji - CMS, konwerter HTML, jednak moja fascynacja dziedziną uczenia maszynowego wzięła górę i tak narodził się pomysł na wielowarstwową sieć neuronową z propagacją wsteczną.</p>
+            <h2>Architektura</h2>
+            <p>Uznałem, że wezmę pod lupę klasyczny problem MNIST, zdecydowałem jednak nie korzystać z dostępnej bazy - jakoś musiałem zrealizować wymagania projektu, więc uznałem, że pojedyncza próbka będzie stringiem 100 zer i jedynek odpowiadająca pikselom w gridzie 10x10. Do przechowywania danych użyłem lokalnej bazy h2 i wystawiłem endpointy (POST, GET, PUT, DELETE) dla próbek w bazie.</p>
+            <p>Projekt trzyma się klasycznego wzorca MVC</p>
+            <p>Controller -> Przyjmuje requesty zwraca JSON</p>
+            <p>Service -> Logika, łączy bazę danych z siecią neuronową</p>
+            <p>Repository -> Dostęp do danych</p>
+            <p>Model -> Encje, w tym przypadku TrainingSample</p>
+            <p>Neural -> Sieć neuronowa</p>
+            <h2>Sieć neuronowa</h2>
+            <p>Serce projektu i najbardziej skomplikowana część.</p>
+            <p>Wejście:     100 neuronów - 1 dla każdego pixela</p>
+            <p>Warstwa 1:   64 neurony</p>
+            <p>Warstwa 2:   32 neurony</p>
+            <p>Wyjście:     10 neuronów - każdy odpowiada jednej klasie (cyfrze)</p>
+            <p>Wagi są inicjalizowane metodą He (Kaiming) - wartości są losowane z rozkładu normalnego o odchyleniu standardowym równym:</p>
+            <p>$$\sqrt{\frac{2}{n}}$$</p>
+            <p>gdzie n to liczba wejść do danego neuronu. Wagi całkowicie losowe mogłyby doprowadzić do eksplozji (zbyt dużych skoków wag w początkowych warstwach) lub zanikania (bardzo małe aktualizacje wag w początkowych warstwach) gradientu.</p>
+            <p>Każda warstwa to klasyczna liniowa transformacja</p> 
+            <p>$$y = W^TX + bias$$</p>
+            <p>przepuszczona przez funkcję aktywacji - w przypadku warstw ukrytych jest to ReLU (banalnie prosta, jeśli wartość jest dodatnia to wynikiem funkcji jest ta wartość, a w przeciwnym wypadku jest to 0), a w przypadku warstwy wyjścia jest to Softmax - który zmienia wartości na rozkład prawdopodobieństwa sumujący się do 1.</p>
+            <h2>Najtrudniejsza część - propagacja wsteczna</h2>
+            <p>Dla ostatniej warstwy obliczamy gradient. Jeśli sieć dla przykładowych klas {a, b, c} wygenerowała predykcję [0.70, 0.20, 0.10] a prawdą była klasa a [1.00, 0.00, 0.00] to w celu uzyskania gradientu odejmujemy od siebie wektory element po elemencie - [0.70 - 1.00 = -0.30, 0.20 - 0.00 = 0.20, 0.10 - 0.00 = 0.10]. Ten wektor wysyła "wiadomość" do algorytmu propagacji wstecznej, wartości ujemne dyktują, że sieć była za mało "pewna siebie", a wartości dodatnie "mówią" sieci, że niepotrzebnie przypisała tu punkty.</p>
+            <p>Teraz następuje podróż w tył - dla każdego aktywnego neuronu (z > 0) aktualizujemy wagi (i bias) wzorem</p>
+            <p>$$W' = W - (learning rate * gradient * X)$$</p>
+            <p>Skorygowanie wag w tył kończy iterację uczenia.</p>
+            <h2>REST API i frontend</h2>
+            <p>Aplikacja obsługuje endpointy CRUD dla próbek treningowych, oraz POST /api/data/predict i POST /api/data/train?epochs=n</p>
+            <p>Frontend został zaprojektowany przez moje ulubione narzędzie AI - Claude Design</p>
+            <h2>Co dalej?</h2>
+            <p>Miałem świetną zabawę przy tworzeniu projektu i zdecydowanie będę chciał rozwiązywać więcej problemów uczenia maszynowego, jednak tym razem raczej bez pełnego API i GUI, no i co najważniejsze - nie w Javie.</p>
+        }
+        else
+        {
+            <h2>Digit classifier from scratch - where did the idea come from?</h2>
+            <p>An assignment for the TPO course - a simple web application in Spring Boot with a GUI, REST API and basic CRUD functionality. I quickly came to the conclusion that such a project is a good base for creating something non-trivial, especially since I had already passed the course and was not under time pressure. I started with simple ideas - a CMS, an HTML converter, however my fascination with the field of machine learning took over and that's how the idea for a multilayer neural network with backpropagation was born.</p>
+            <h2>Architecture</h2>
+            <p>I decided to take a closer look at the classic MNIST problem, however I chose not to use the available dataset - I somehow had to meet the project requirements, so I decided that a single sample would be a string of 100 zeros and ones corresponding to pixels in a 10x10 grid. I used a local H2 database to store the data and exposed endpoints (POST, GET, PUT, DELETE) for samples in the database.</p>
+            <p>The project follows the classic MVC pattern</p>
+            <p>Controller -> Accepts requests, returns JSON</p>
+            <p>Service -> Business logic, connects the database with the neural network</p>
+            <p>Repository -> Data access</p>
+            <p>Model -> Entities, in this case TrainingSample</p>
+            <p>Neural -> Neural network</p>
+            <h2>Neural network</h2>
+            <p>The heart of the project and its most complex part.</p>
+            <p>Input:      100 neurons - 1 for each pixel</p>
+            <p>Layer 1:    64 neurons</p>
+            <p>Layer 2:    32 neurons</p>
+            <p>Output:     10 neurons - each corresponding to one class (digit)</p>
+            <p>Weights are initialized using the He (Kaiming) method - values are sampled from a normal distribution with a standard deviation equal to:</p>
+            <p>$$\sqrt{\frac{2}{n}}$$</p>
+            <p>where n is the number of inputs to a given neuron. Completely random weights could lead to exploding (too large weight updates in the initial layers) or vanishing (very small weight updates in the initial layers) gradients.</p>
+            <p>Each layer is a classic linear transformation</p>
+            <p>$$y = W^TX + bias$$</p>
+            <p>passed through an activation function - in the case of hidden layers this is ReLU (trivially simple - if the value is positive the result of the function is that value, otherwise it is 0), and in the case of the output layer it is Softmax - which converts values into a probability distribution summing to 1.</p>
+            <h2>The hardest part - backpropagation</h2>
+            <p>For the last layer we compute the gradient. If the network for example classes {a, b, c} generated a prediction [0.70, 0.20, 0.10] and the ground truth was class a [1.00, 0.00, 0.00], then to obtain the gradient we subtract the vectors element by element - [0.70 - 1.00 = -0.30, 0.20 - 0.00 = 0.20, 0.10 - 0.00 = 0.10]. This vector sends a "message" to the backpropagation algorithm - negative values dictate that the network was not "confident enough", while positive values "tell" the network that it unnecessarily assigned points there.</p>
+            <p>Now the backward pass begins - for each active neuron (z > 0) we update the weights (and bias) using the formula</p>
+            <p>$$W' = W - (learning rate * gradient * X)$$</p>
+            <p>Correcting the weights backward completes one training iteration.</p>
+            <h2>REST API and frontend</h2>
+            <p>The application supports CRUD endpoints for training samples, as well as POST /api/data/predict and POST /api/data/train?epochs=n</p>
+            <p>The frontend was designed by my favorite AI tool - Claude Design</p>
+            <h2>What's next?</h2>
+            <p>I had a great time building the project and I will definitely want to tackle more machine learning problems, however this time probably without a full API and GUI, and most importantly - not in Java.</p>
+        }
+    </div>
+</div>
+
+@code {
+    private WorkItem? _item;
+
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+        _item = WorksData.All.FirstOrDefault(w => w.Slug == "spring-backpropagation-digit-classifier");
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JS.InvokeVoidAsync("renderMath");
+    }
+
+    public void Dispose()
+        => State.OnChange -= StateHasChanged;
+}
