@@ -7,6 +7,10 @@ public static class WorksData
 {
     public static readonly List<WorkItem> All =
     [
+        new WorkItem("wordpress-aws-ecs", "project", "2026-06", "Wordpress w kontenerach na AWS ECS w CloudFormation",
+            "Wordpress in containers on AWS ECS using CloudFormation", ["AWS", "CloudFormation", "WordPress"],
+            "https://github.com/Jakobb32866/AWS_ECS_WP", null),
+        
         new WorkItem("spring-backpropagation-digit-classifier", "project", "2026-06", "Klasyfikator cyfr z propagacją wsteczną w Java Spring",
             "Digit classifier with backpropagation in Java Spring", ["Java", "Spring", "ML", "REST API", "HTML", "CSS", "JavaScript", "Claude Design"],
             "https://github.com/Jakobb32866/Digit_classifier_java_spring", null),

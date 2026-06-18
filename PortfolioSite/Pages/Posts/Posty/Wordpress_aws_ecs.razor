@@ -1,0 +1,59 @@
+@page "/works/wordpress-aws-ecs"
+@inject NavigationManager Nav
+@inject AppState State
+@using PortfolioSite.Models
+@implements IDisposable
+
+<div class="post-page">
+    <button class="post-back" @onclick='() => Nav.NavigateTo("/works")'>@(State.Lang == "pl" ? "← prace" : "← works")</button>
+
+    <div class="page-header">
+        <div class="page-label">// @_item?.Type</div>
+        <h1 class="page-title">@(State.Lang == "pl" ? _item?.TitlePl : _item?.TitleEn)</h1>
+        <div class="post-meta">
+            <span class="post-date">@_item?.Date</span>
+            @foreach (var tag in _item?.Tags ?? new List<string>())
+            {
+                <span class="we-tag-inline">@tag</span>
+            }
+        </div>
+        <div class="post-links">
+            @if (_item?.GitHubUrl != null)
+            {
+                <a href="@_item.GitHubUrl" target="_blank" class="post-link">GitHub →</a>
+            }
+            @if (_item?.LiveUrl != null)
+            {
+                <a href="@_item.LiveUrl" target="_blank" class="post-link post-link--live">Live →</a>
+            }
+        </div>
+    </div>
+
+    <div class="post-content">
+        @if (State.Lang == "pl")
+        {
+            <p>Ostatni projekt z PCO - Podstawy chmury obliczeniowej i tym samym finał przedmiotu (5.0).</p>
+            <p>Cel: system wordpress dla wielu klientów na jednym klastrze ECS, gdzie każdy klient ma swój izolowany serwis, a całość jest automatyzowana przez CloudFormation.</p>
+            <p>Klasycznie podzieliłem kod na stacki odpowiadające za oddzielne warstwy. Każdy klient ma swój katalog na EFS i swoją bazę na wspólnym RDS. Load balancer rozdziela ruch po nagłówku Host. Redundancja jest zapewniona przez rozkładanie tasków do dwóch AZ, więc serwis działa w nawet w przypadku awarii jednego z nich.</p>
+        }
+        else
+        {
+            <p>The final project for PCO - Cloud Computing Fundamentals, and with it the end of the course (5.0).</p>
+            <p>Goal: a multi-tenant WordPress system on a single ECS cluster, where each client has their own isolated service, with the entire infrastructure automated via CloudFormation.</p>
+            <p>I cleanly split the code into stacks corresponding to separate layers. Each client gets their own directory on EFS and their own database on a shared RDS instance. The load balancer routes traffic based on the Host header. Redundancy is ensured by distributing tasks across two AZs, so the service remains operational even if one of them goes down.</p>
+        }
+    </div>
+</div>
+
+@code {
+    private WorkItem? _item;
+
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+        _item = WorksData.All.FirstOrDefault(w => w.Slug == "wordpress-aws-ecs");
+    }
+
+    public void Dispose()
+        => State.OnChange -= StateHasChanged;
+}
